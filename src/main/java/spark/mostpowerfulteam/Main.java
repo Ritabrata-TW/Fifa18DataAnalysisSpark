@@ -5,8 +5,8 @@ import org.apache.spark.api.java.JavaPairRDD;
 public class Main {
     public static void main(String[] args) {
         DataAnalyserService dataAnalyserService = new DataAnalyserService();
-        JavaPairRDD<String, Player> team = dataAnalyserService.findMostPowerfulTeam();
+        JavaPairRDD<String, Integer> teamToAggregatedOverallMapping = dataAnalyserService.findMostPowerfulTeam();
 
-        team.take(10).forEach(System.out::println);
+        teamToAggregatedOverallMapping.take(10).forEach(System.out::println);
     }
 }
