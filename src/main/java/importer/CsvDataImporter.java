@@ -1,8 +1,9 @@
-package spark.mostpowerfulteam;
+package importer;
 
 import java.io.Serializable;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
+import spark.config.SparkConfig;
 
 public class CsvDataImporter implements Serializable{
     public JavaRDD<String> importFile(String path) {
