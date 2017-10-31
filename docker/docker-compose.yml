@@ -83,6 +83,27 @@ services:
       - "MAIN_CLASS=spark.mostpowerfulteam.Main"
     command: bash -C /spark-scripts/submit_job.sh
 
+  players-by-country:
+    image: java:8-jre
+  #   restart: on-failure
+    container_name: players-by-country
+    ports:
+      - "4001:4000"
+    depends_on:
+      - spark-worker
+      - spark-worker1
+      - spark-worker2
+    links:
+      - spark-master
+    volumes:
+      - ../build:/usr/build
+      - ../src/main/resources:/src/main/resources
+      - spark:/spark-master/spark
+      - ./spark-scripts:/spark-scripts
+    environment:
+      - "MAIN_CLASS=spark.playersbycountry.Main"
+    command: bash -C /spark-scripts/submit_job.sh
+
 volumes:
   spark: {}
 

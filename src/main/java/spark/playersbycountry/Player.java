@@ -1,4 +1,4 @@
-package spark.mostpowerfulteam;
+package spark.playersbycountry;
 
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,5 @@ import lombok.Data;
 class Player implements Serializable {
     String id;
     String name;
-    String club;
-    Integer overall;
-    Integer potential;
+    String nationality;
 }

@@ -7,7 +7,7 @@ import scala.Serializable;
 import scala.Tuple2;
 import utils.SparkRddReverserUtil;
 
-class DataAnalyserService implements Serializable {
+class MostPowerfulTeamService implements Serializable {
     JavaPairRDD<String, Float> findMostPowerfulTeam() {
         CsvDataImporter csvDataImporter = new CsvDataImporter();
         JavaRDD<String> rdd = csvDataImporter.importFile("/src/main/resources/CompleteDataset.csv");
@@ -37,7 +37,6 @@ class DataAnalyserService implements Serializable {
 
     private Player mapToPlayerData(String line) {
         String[] splittedLine = line.split(",");
-        String id = splittedLine[0];
-        return new Player(id, splittedLine[1], splittedLine[8], Integer.parseInt(splittedLine[6]), Integer.parseInt(splittedLine[7]));
+        return new Player(splittedLine[0], splittedLine[1], splittedLine[8], Integer.parseInt(splittedLine[6]), Integer.parseInt(splittedLine[7]));
     }
 }
