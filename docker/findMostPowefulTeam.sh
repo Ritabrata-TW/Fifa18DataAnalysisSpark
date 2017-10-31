@@ -5,7 +5,7 @@ container="most-powerful-teams"
 case $1 in
 	"hot-reload")
 		cd ..
-		./gradlew jar
+		./gradlew build
 		cd docker
 		docker-compose stop -t 0 $container
 		docker-compose rm -f $container
