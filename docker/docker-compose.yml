@@ -1,0 +1,88 @@
+version : '3.1'
+
+services:
+  spark-master:
+    image: bde2020/spark-master:2.2.0-hadoop2.7
+    container_name: spark-master
+    hostname: spark-master
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    volumes:
+      - ../build:/usr/build
+      - spark:/spark
+      - ../src/main/resources:/src/main/resources
+    environment:
+      - INIT_DAEMON_STEP=setup_spark
+      - "constraint:node==spark-master"
+
+  spark-worker:
+    image: bde2020/spark-worker:2.2.0-hadoop2.7
+    container_name: spark-worker1
+#    deploy:
+#      replicas: 2
+    links:
+      - spark-master
+    ports:
+      - "8081:8081"
+    environment:
+      - "SPARK_MASTER=spark://spark-master:7077"
+      - "constraint:node==spark-master"
+    volumes:
+      - ../src/main/resources:/src/main/resources
+
+
+  spark-worker1:
+    image: bde2020/spark-worker:2.2.0-hadoop2.7
+    container_name: spark-worker2
+#    deploy:
+#      replicas: 2
+    links:
+      - spark-master
+    ports:
+      - "8082:8082"
+    environment:
+      - "SPARK_MASTER=spark://spark-master:7077"
+      - "constraint:node==spark-master"
+    volumes:
+      - ../src/main/resources:/src/main/resources
+
+  spark-worker2:
+    image: bde2020/spark-worker:2.2.0-hadoop2.7
+    container_name: spark-worker3
+#    deploy:
+#      replicas: 2
+    links:
+      - spark-master
+    ports:
+      - "8083:8083"
+    environment:
+      - "SPARK_MASTER=spark://spark-master:7077"
+      - "constraint:node==spark-master"
+    volumes:
+      - ../src/main/resources:/src/main/resources
+
+  most-powerful-teams:
+    image: java:8-jre
+#    restart: on-failure
+    container_name: most-powerful-teams
+    ports:
+      - "4000:4000"
+    depends_on:
+      - spark-worker
+      - spark-worker1
+      - spark-worker2
+    links:
+      - spark-master
+    volumes:
+      - ../build:/usr/build
+      - ../src/main/resources:/src/main/resources
+      - spark:/spark-master/spark
+      - ./spark-scripts:/spark-scripts
+    environment:
+      - "MAIN_CLASS=spark.mostpowerfulteam.Main"
+    command: bash -C /spark-scripts/submit_job.sh
+
+volumes:
+  spark: {}
+
